@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button increase</title>
+</head>
+<body>
+    <!--
+    Applying React state to build
+    -->
+    <div id="container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        let container = document.getElementById('container');
+
+        function DaButton({clickNum, setClickNum}) {
+            function updateClick() {
+                setClickNum(
+                    ++clickNum
+                );
+            }
+
+            return (
+                <>
+                    <button onClick={updateClick}>Clicked {clickNum} {clickNum == 1 ? "time" : "times"}</button>
+                </>
+            )
+        }
+
+        function SeparateButton() {
+            let [count, updateCount] = React.useState(0);
+
+            function increase() {
+                updateCount(
+                    ++count
+                )
+            }
+
+            return (
+                <>
+                    <button onClick={increase}>Clicked {count} {count == 1 ? "time" : "times"}</button>
+                </>
+            )
+        }
+
+        function Reset({clickNum, setClickNum}) {
+            function reset() {
+                setClickNum(
+                    0
+                );
+            }
+            
+            return (
+                <>
+                    <button onClick={reset}>Reset</button>
+                </>
+            )
+        }
+
+        function ControlledInputs({name, setName}) {
+            function UpdateName(event) {
+                setName(
+                    event.target.value
+                )
+            }
+
+            function Reset() {
+                setName(
+                    ''
+                )
+            }
+
+            function SetExample() {
+                setName(
+                    'Henry'
+                )
+            }
+
+            return (
+                <>
+                    <input onChange={UpdateName} placeholder="Type a name here" value={name}/>
+                    <button onClick={Reset}>Reset</button>
+                    <button onClick={SetExample}>Example</button>
+                </>
+            )
+        }
+
+        function App() {
+            // Array destructuring + Lifting the state up technique
+            const [clickNum, setClickNum] = React.useState(0);
+            const [name, setName] = React.useState('');
+            return (
+                <>
+                    <DaButton 
+                        clickNum={clickNum}
+                        setClickNum={setClickNum}
+                    />
+                    <DaButton
+                        clickNum={clickNum}
+                        setClickNum={setClickNum}
+                    />
+                    <Reset
+                        clickNum={clickNum}
+                        setClickNum={setClickNum}
+                    />
+                    <br/>
+                    <p>Separate counting</p>
+                    <br/>
+                    <SeparateButton />
+                    <SeparateButton />
+                    <br/>
+                    <p>Controlled input exercise</p>
+                    <ControlledInputs 
+                        name={name}
+                        setName={setName}
+                    />
+                    <p>Hello {name}</p>
+                </>
+            )
+        }
+
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+</body>
+</html>
