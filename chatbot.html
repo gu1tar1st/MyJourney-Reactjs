@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    
+    <!-- 
+        ReactDOM.createRoot(): setup react
+        .render(args): React features -> display the args
+
+        Babel JS: transform JSX (a language of React - Javascript XML) to JS
+
+        Add multiple elements in render using div or React.Fragment
+
+        Component: part of a program
+        -> can be declared as function() or tag [Component Syntax]
+        -> <function></function> 
+
+        Fragment: <></> -> groups tags together
+
+        Props (Properties): the attribute of the component
+        Components can be reused.
+
+        Shortcut for props
+
+        If-statement in JFX: const result = value1 && value2
+        Guard-operator (&&): if value1 is true, result = value2
+    -->
+    <script type="text/babel">
+        function ChatInput({chatMessages, setChatMessage}) {
+          const [inputText, setInputText] = React.useState('');
+
+          // Event is an object containing details about changes
+          function saveInputText(event) {
+            // event.target.value;
+            setInputText(event.target.value);
+          }
+
+          function sendMessage() {
+            const newChatMessage = [
+              ...chatMessages, // ... is a spread operator, which copies the values from one array to a new one
+              {
+                message: inputText,
+                sender: 'user',
+                key: crypto.randomUUID()
+              }
+            ]
+            setChatMessage(newChatMessage);
+
+            const response = Chatbot.getResponse(inputText);
+            setChatMessage([
+              ...newChatMessage,
+              {
+                message: response,
+                sender: 'robot',
+                key: crypto.randomUUID()
+              }
+            ])
+
+            // Controlled input
+            setInputText(''); //Empty input after sending
+          }
+
+          /**
+           * Lifting the state up:
+           * A technique that moves React state into a
+           * higher-ranked component so that more components
+           * can access that state
+           * Ex: move sendChatMessage feature to App component
+           * so chatInput can also access it
+           * */
+          
+          return (
+            <> {/* FRAGMENT */}
+              <input 
+                required 
+                placeholder="Send a message to Chatbot" 
+                size="30"
+                onChange={saveInputText}
+                value={inputText}
+              />
+              <button onClick={sendMessage}>Send</button>
+            </>
+          );
+        }
+
+        function ChatMessage(props) { // Can also be passed {message, sender}
+          //const message = props.message;
+          //const sender = props.sender;
+          //Destructing (shortcut)
+          const {message, sender} = props;
+          
+          // if (sender === "user") {
+          //   return (
+          //     <div>
+          //       {message}
+          //       <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" width="50" />
+          //     </div>
+          //   );
+          // } else {
+          //   return (
+          //     <div>
+          //       {sender === "robot" && <img src="https://supersimple.dev/projects/chatbot/robot.png" alt="Robot.logo" width="50" />}
+          //       {message}
+          //       {sender === "user" && <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" width="50" />}
+          //     </div>
+          //   );
+          // }
+          return (
+            <div>
+              {sender === "robot" && (
+                <img src="https://supersimple.dev/projects/chatbot/robot.png" alt="Robot.logo" width="50" />
+              )}
+              {message}
+              {sender === "user" && (
+                <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" width="50" />)}
+            </div>
+          );
+        }
+
+        function Chat({chatMessages}) {
+          // State: data connected to html
+          // Use State so that chat message can reset every time it is updated
+
+          // const array = React.useState(
+          //   [
+          //     {
+          //       message: 'hello chatbot',
+          //       sender: 'user',
+          //       key: 'id1'
+          //     }, {
+          //       message: 'how can i help you?',
+          //       sender: 'robot',
+          //       key: 'id2'
+          //     }, {
+          //       message: 'can you get me todays date?',
+          //       sender: 'user',
+          //       key: 'id3'
+          //     }, {
+          //       message: 'today is September 27',
+          //       sender: 'robot',
+          //       key: 'id4'
+          //     }
+          //   ]
+          // ); // Array: list of values, group values in objects as {}
+          
+          // // React.useState() returns an array of 2 rows, row 0 contains all data, row 1 contains function that helps update data in row 0
+          // // const chatMessages = array[0];
+          // // const setChatMessage = array[1]; // The only way to update data and also HTML
+          
+          // // Array Destructuring
+          // const [chatMessages, setChatMessage] = array;
+          
+          // function sendMessage() {
+          //   // Copy the messages array and modify the copy
+          //   setChatMessage([
+          //     ...chatMessages, // ... is a spread operator, which copies the values from one array to a new one
+          //     {
+          //       message: 'test',
+          //       sender: 'user',
+          //       key: crypto.randomUUID()
+          //     }
+          //   ]);
+          // }
+          
+          const chatMessageComponents = chatMessages.map((chatMessage) => {
+            return (
+              <ChatMessage 
+                message={chatMessage.message}
+                sender={chatMessage.sender}
+                key={chatMessage.key} // React track changes in data
+              />
+            )
+          }); // Go through each value, run the function, and return new value
+
+          return (
+            <>
+              {chatMessageComponents}
+            </>
+          )
+        }
+
+        function App() {
+          const array = React.useState(
+            [
+              {
+                message: 'hello chatbot',
+                sender: 'user',
+                key: 'id1'
+              }, {
+                message: 'how can i help you?',
+                sender: 'robot',
+                key: 'id2'
+              }, {
+                message: 'can you get me todays date?',
+                sender: 'user',
+                key: 'id3'
+              }, {
+                message: 'today is September 27',
+                sender: 'robot',
+                key: 'id4'
+              }
+            ]
+          ); // Array: list of values, group values in objects as {}
+          
+          // React.useState() returns an array of 2 rows, row 0 contains all data, row 1 contains function that helps update data in row 0
+          // const chatMessages = array[0];
+          // const setChatMessage = array[1]; // The only way to update data and also HTML
+          
+          // Array Destructuring
+          const [chatMessages, setChatMessage] = array;
+
+          return (
+            <>
+              <ChatInput 
+                chatMessages={chatMessages}
+                setChatMessage={setChatMessage}
+              />
+              <Chat 
+                chatMessages={chatMessages}
+              />
+            </>
+          );
+        }
+
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render(<App />); // function App()
+    </script>
+  </body>
+</html>

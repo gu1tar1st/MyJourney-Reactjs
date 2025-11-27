@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        const button = <button>Add to Card</button>;
+        ReactDOM.createRoot(root).render(
+            <div>
+                <p>Cotton socks</p>
+                <p>Price: $10</p>
+                {button}
+            </div>
+        )
+    </script>
+</body>
+</html>

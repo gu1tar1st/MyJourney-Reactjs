@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id ="root"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const socks_price = 10;
+        const t_shirts = 8;
+
+        let num_socks = 1;
+        let num_shirt = 2;
+
+        let productCost = socks_price * num_socks + t_shirts * num_shirt;
+
+        const root = document.getElementById("root");
+
+        ReactDOM.createRoot(root).render(
+            <p>Product cost: ${productCost}</p>
+        );
+    </script>
+</body>
+</html>

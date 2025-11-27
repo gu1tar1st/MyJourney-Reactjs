@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REACT Test</title>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const container = document.getElementById("container");
+
+        function Introduction() {
+            return (
+                <>
+                    <h2>Introduction about me</h2>
+                    <br/>
+                    <h3>Hi, my name is Henry Vu</h3>
+                    <p>Current occupation: CS undergrad @ Purdue University</p>
+                </>
+            )
+        }
+
+        function IntroductionTech() {
+            return (
+                <>
+                    <h3>My passion: </h3><h5>Software Engineer and Artificial Intelligence</h5>
+                    <br/>
+                    <p>I like to code HTML, CSS, and JS</p><i>I can also work with Java and Python</i>
+                    <br/>
+                </>
+            )
+        }
+
+        // Conditions
+        function FunButton() {
+            const [condition, setter] = React.useState(null);
+            function Condition() {
+                setter(prev => {
+                    if (prev === null) return true;
+                    return !prev;
+                })
+            }
+            return (
+                <>
+                    <button onClick={Condition}>CLICK ME</button>
+                    <br/>
+                    { condition === true && (
+                        <img src="https://i.redd.it/vewwqeyihbaf1.jpeg" alt="LOL" width="100" height="100" />
+                    )}
+                    { condition === false && (
+                        <img src="https://w0.peakpx.com/wallpaper/936/656/HD-wallpaper-monkey-meme.jpg" alt="JOHN" width="100" height="100" />
+                    )}
+                </>
+            )
+        }
+
+        function Credits() {
+            return (
+                <>
+                    <center>
+                        <sub>
+                            Powered by REACT.js written in Babel
+                        </sub>
+                    </center>
+                </>
+            )
+        }
+
+        function App() {
+            return (
+                <>
+                    <Introduction/>
+                    <IntroductionTech/>
+                    <br/>
+                    <FunButton/>
+                    <br/>
+                    <Credits/>
+                </>
+            )
+        }
+
+        ReactDOM.createRoot(container).render(<App/>);
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="react-basics.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    
+    <!-- 
+        ReactDOM.createRoot(): setup react
+        .render(args): React features -> display the args
+
+        Babel JS: transform JSX (a language of React - Javascript XML) to JS
+
+        Add multiple elements in render using div or React.Fragment
+    -->
+    <script type="text/babel">
+        const button = <button>Click Me!</button>;
+
+        const div = (
+            <div>
+                <h1>Hello, React!</h1>
+                {button}
+            </div>
+        )
+
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render(div);
+    </script>
+  </body>
+</html>
