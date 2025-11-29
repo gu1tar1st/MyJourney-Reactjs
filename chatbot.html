@@ -2,6 +2,82 @@
 <html>
   <head>
     <title>Chatbot</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+
+      .send-button {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        border: none;
+        margin-left: 10px;
+        font-size: 15px;
+        cursor: progress;
+      }
+
+      .input {
+        padding: 12px 20px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+        flex-grow: 1;
+        cursor: crosshair;
+        color: green;
+      }
+
+      .chat-container {
+        display: flex;
+        margin-bottom: 60px;
+      }
+
+      .app-container {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 100vh;
+        display: flex;
+        flex-direction: column; /* vertical */
+      }
+
+      .robot-message {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+      }
+
+      .user-message {
+        display: flex;
+        justify-content: end;
+        align-items: start;
+      }
+
+      .chat-content {
+        background-color: rgb(238, 238, 238);
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 20px;
+        max-width: 300px;
+      }
+
+      .profile-image {
+        max-width: 45px;
+      }
+
+      .message-container {
+        flex-grow: 1;
+        margin-top: 20px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scrollbar-width: none;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -34,6 +110,9 @@
 
         If-statement in JFX: const result = value1 && value2
         Guard-operator (&&): if value1 is true, result = value2
+
+        Hooks: insert React features into components, mostly start with keyword "use" like useState()
+        Hooks should be at the top of the component (first line of code), should not be inside anything
     -->
     <script type="text/babel">
         function ChatInput({chatMessages, setChatMessage}) {
@@ -80,16 +159,18 @@
            * */
           
           return (
-            <> {/* FRAGMENT */}
+            <div className="chat-container"> {/* FRAGMENT <> changed to div */}
               <input 
                 required 
                 placeholder="Send a message to Chatbot" 
                 size="30"
                 onChange={saveInputText}
                 value={inputText}
+                className="input"
               />
-              <button onClick={sendMessage}>Send</button>
-            </>
+              <button onClick={sendMessage} className="send-button">Send</button> 
+            </div>
+            // Class is a reserved keyword, so use className
           );
         }
 
@@ -116,13 +197,17 @@
           //   );
           // }
           return (
-            <div>
+            <div className={
+              sender === "robot" ? "robot-message" : "user-message"
+            }>
               {sender === "robot" && (
-                <img src="https://supersimple.dev/projects/chatbot/robot.png" alt="Robot.logo" width="50" />
+                <img src="https://supersimple.dev/projects/chatbot/robot.png" alt="Robot.logo" className="profile-image" />
               )}
-              {message}
+              <div className="chat-content">
+                {message}
+              </div>
               {sender === "user" && (
-                <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" width="50" />)}
+                <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" className="profile-image" />)}
             </div>
           );
         }
@@ -171,6 +256,19 @@
           //     }
           //   ]);
           // }
+
+          // Automatically safe HTML element from component
+          const chatMessagesRef = React.useRef(null);
+
+          // Every time the component is called, this hook will run
+          // Empty array parameter, only run once after the component is created
+          // Dynamic array parameter (dependency array), runs after the update of array
+          React.useEffect(() => {
+            const containerElement = chatMessagesRef.current;
+            if (containerElement) {
+              containerElement.scrollTop = containerElement.scrollHeight; // Go to the latest message segment
+            }
+          }, [chatMessages]);
           
           const chatMessageComponents = chatMessages.map((chatMessage) => {
             return (
@@ -183,32 +281,32 @@
           }); // Go through each value, run the function, and return new value
 
           return (
-            <>
+            <div className="message-container" ref={chatMessagesRef}>
               {chatMessageComponents}
-            </>
+            </div>
           )
         }
 
         function App() {
           const array = React.useState(
             [
-              {
-                message: 'hello chatbot',
-                sender: 'user',
-                key: 'id1'
-              }, {
-                message: 'how can i help you?',
-                sender: 'robot',
-                key: 'id2'
-              }, {
-                message: 'can you get me todays date?',
-                sender: 'user',
-                key: 'id3'
-              }, {
-                message: 'today is September 27',
-                sender: 'robot',
-                key: 'id4'
-              }
+              // {
+              //   message: 'hello chatbot',
+              //   sender: 'user',
+              //   key: 'id1'
+              // }, {
+              //   message: 'how can i help you?',
+              //   sender: 'robot',
+              //   key: 'id2'
+              // }, {
+              //   message: 'can you get me todays date?',
+              //   sender: 'user',
+              //   key: 'id3'
+              // }, {
+              //   message: 'today is September 27',
+              //   sender: 'robot',
+              //   key: 'id4'
+              // }
             ]
           ); // Array: list of values, group values in objects as {}
           
@@ -220,15 +318,16 @@
           const [chatMessages, setChatMessage] = array;
 
           return (
-            <>
+            <div className="app-container"> {/* container */}
+              
+              <Chat 
+                chatMessages={chatMessages}
+              />
               <ChatInput 
                 chatMessages={chatMessages}
                 setChatMessage={setChatMessage}
               />
-              <Chat 
-                chatMessages={chatMessages}
-              />
-            </>
+            </div>
           );
         }
 

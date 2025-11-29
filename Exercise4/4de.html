@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex4</title>
+    <style>
+        input {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            border-width: 1px;
+        }
+
+        .button-container button {
+            background-color: rgb(0, 123, 255);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            margin-right: 5px;
+        }
+
+        .show-password {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const container = document.getElementById("container");
+
+        function TheForm({showPassword, update}) {
+            function show() {
+                update(!showPassword);
+            }
+
+            return (
+                <>
+                    <h2>Hello, welcome to my website</h2>
+                    <input type="email" placeholder="Email" />
+                    <br/>
+                    <input type={showPassword ? "text" : "password"} placeholder="Password" />
+                    <button className="show-password" onClick={show}>Show</button>
+                    <br/><br/>
+                    <div className="button-container">
+                        <button>Login</button>
+                        <button>Sign up</button>
+                    </div>
+                </>
+            )
+        }
+
+        function App() {
+            const [showPassword, update] = React.useState(false);
+            return (
+                <>
+                    <TheForm 
+                        showPassword={showPassword}
+                        update={update}
+                    />
+                </>
+            )
+        }
+
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+</body>
+</html>

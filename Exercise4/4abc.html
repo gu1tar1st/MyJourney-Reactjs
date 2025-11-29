@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex4</title>
+    <style>
+        button {
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 20px;
+        }
+
+        .on-button {
+            background-color: rgb(25, 135, 84);
+        }
+
+        .off-button {
+            background-color: rgb(220, 53, 69);
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const container = document.getElementById("container");
+
+        function TheButton({buttonState, setState}) {
+            function update() {
+                setState(!buttonState);
+            }
+
+            return (
+                <>
+                    <button className={buttonState ? "on-button" : "off-button"} onClick={update}>{buttonState ? "ON" : "OFF"}</button>
+                </>
+            )
+        }
+
+        function App() {
+            const [isButtonOn, updateState] = React.useState(new Boolean(true));
+            return (
+                <>
+                    <TheButton 
+                        buttonState={isButtonOn}
+                        setState={updateState}
+                    />
+                </>
+            );
+        }
+
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex4</title>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script type="text/babel">
+        const container = document.getElementById("container");
+
+        function TimeString({time, updateTime}) {
+            React.useEffect(() => {
+                const interval = setInterval(() => {update()}, 1000)
+
+                return () => clearInterval(interval)
+            }, [])
+
+            function update() {
+                updateTime(dayjs().format('HH:mm:ss'));
+            }
+
+            return (
+                <>
+                    <p>Current time: {time}</p>
+                </>
+            )
+        }
+
+        function Clicker({click, updateClick}) {
+            const [isAuto, updateState] = React.useState(false);
+
+            function update() {
+                updateClick(click + 1);
+            }
+
+            function Reset() {
+                updateClick(0);
+            }
+
+            function Autoclick() {
+                updateState(!isAuto);
+                if (isAuto === true) {
+                    Reset();
+                }
+            }
+
+            React.useEffect(() => {
+                if (isAuto) {
+                    const interval = setInterval(() => {
+                        updateClick(prev => prev + 1);
+                    }, 1000);
+
+                    return () => clearInterval(interval);
+                }
+            }, [isAuto, updateClick])
+
+            return (
+                <>
+                    <button onClick={update}>Clicked {click} {click == 1 ? "time" : "times"}</button>
+                    <button onClick={Reset}>Reset</button>
+                    <button onClick={Autoclick}>{isAuto ? "Turn off" : "Auto Click"}</button>
+                </>
+            )
+        }
+
+        function App() {
+            const [time, updateTime] = React.useState(dayjs().format('HH:mm:ss'));
+            const [click, updateClick] = React.useState(0);    
+
+            return (
+                <>
+                    <TimeString 
+                        time={time}
+                        updateTime={updateTime}
+                    />
+                    <Clicker 
+                        click={click}
+                        updateClick={updateClick}
+                    />
+                </>
+            )
+        }
+
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+</body>
+</html>
