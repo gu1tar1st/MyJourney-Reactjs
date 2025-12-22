@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Chatbot } from 'supersimpledev'
+import dayjs from 'dayjs'
 
 function ChatInput({chatMessages, setChatMessage}) {
   const [inputText, setInputText] = useState('');
@@ -16,7 +17,8 @@ function ChatInput({chatMessages, setChatMessage}) {
       {
         message: inputText,
         sender: 'user',
-        key: crypto.randomUUID()
+        key: crypto.randomUUID(),
+        time: dayjs().valueOf()
       }
     ]
     setChatMessage(newChatMessage);
@@ -27,12 +29,18 @@ function ChatInput({chatMessages, setChatMessage}) {
       {
         message: response,
         sender: 'robot',
-        key: crypto.randomUUID()
+        key: crypto.randomUUID(),
+        time: dayjs().valueOf()
       }
     ])
 
     // Controlled input
     setInputText(''); //Empty input after sending
+  }
+
+  function clearMessages() {
+    localStorage.clear();
+    setChatMessage([]);
   }
 
   /**
@@ -54,7 +62,8 @@ function ChatInput({chatMessages, setChatMessage}) {
         value={inputText}
         className="input"
       />
-      <button onClick={sendMessage} className="send-button">Send</button> 
+      <button onClick={sendMessage} className="send-button">Send</button>
+      <button onClick={clearMessages} className="clear-button">Clear</button>
     </div>
     // Class is a reserved keyword, so use className
   );

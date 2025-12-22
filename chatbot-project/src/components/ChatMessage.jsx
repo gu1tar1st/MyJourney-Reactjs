@@ -1,8 +1,10 @@
+import dayjs from 'dayjs';
+
 function ChatMessage(props) { // Can also be passed {message, sender}
   //const message = props.message;
   //const sender = props.sender;
   //Destructing (shortcut)
-  const {message, sender} = props;
+  const {message, sender, time} = props;
   
   // if (sender === "user") {
   //   return (
@@ -29,6 +31,11 @@ function ChatMessage(props) { // Can also be passed {message, sender}
       )}
       <div className="chat-content">
         {message}
+        {time && (
+          <div className='chat-message-time'>
+            {dayjs(time).format('h:mma')}
+          </div>
+        )}
       </div>
       {sender === "user" && (
         <img src="https://supersimple.dev/projects/chatbot/user.png" alt="User.logo" className="profile-image" />)}

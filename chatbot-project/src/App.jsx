@@ -1,31 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 // Components
 import ChatInput from './components/ChatInput'
 import Chat from './components/Chat'
+import { Chatbot } from 'supersimpledev'
 
 function App() {
   const array = useState(
-    [
-      // {
-      //   message: 'hello chatbot',
-      //   sender: 'user',
-      //   key: 'id1'
-      // }, {
-      //   message: 'how can i help you?',
-      //   sender: 'robot',
-      //   key: 'id2'
-      // }, {
-      //   message: 'can you get me todays date?',
-      //   sender: 'user',
-      //   key: 'id3'
-      // }, {
-      //   message: 'today is September 27',
-      //   sender: 'robot',
-      //   key: 'id4'
-      // }
-    ]
+    // [
+    //   // {
+    //   //   message: 'hello chatbot',
+    //   //   sender: 'user',
+    //   //   key: 'id1'
+    //   // }, {
+    //   //   message: 'how can i help you?',
+    //   //   sender: 'robot',
+    //   //   key: 'id2'
+    //   // }, {
+    //   //   message: 'can you get me todays date?',
+    //   //   sender: 'user',
+    //   //   key: 'id3'
+    //   // }, {
+    //   //   message: 'today is September 27',
+    //   //   sender: 'robot',
+    //   //   key: 'id4'
+    //   // }
+    // ],
+    JSON.parse(localStorage.getItem('messages') || '[]')
   ); // Array: list of values, group values in objects as {}
   
   // React.useState() returns an array of 2 rows, row 0 contains all data, row 1 contains function that helps update data in row 0
@@ -34,6 +36,17 @@ function App() {
   
   // Array Destructuring
   const [chatMessages, setChatMessage] = array;
+
+  useEffect(() => {
+    Chatbot.addResponses({"wsp": "Yo wsp!", 
+      "wsp gng": "Yo wsp gng!",
+      "This shi tuff": "Dang"
+    });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('messages', JSON.stringify(chatMessages));
+  }, [chatMessages]);
 
   return (
     <div className="app-container"> {/* container */}

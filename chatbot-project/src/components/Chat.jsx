@@ -65,6 +65,7 @@ function Chat({chatMessages}) {
         message={chatMessage.message}
         sender={chatMessage.sender}
         key={chatMessage.key} // React track changes in data
+        time={chatMessage.time}
       />
     )
   }); // Go through each value, run the function, and return new value
