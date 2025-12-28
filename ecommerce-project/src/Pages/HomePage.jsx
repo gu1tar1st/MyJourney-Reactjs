@@ -18,13 +18,14 @@ export function HomePage() {
     const [cartItems, setCartItems] = useState([]);
 
     // Run only once
+    // Config localhost:3000 shortcut in vite config
     useEffect(() => {
-        axios.get('http://localhost:3000/api/products') // The same as fetch
+        axios.get('/api/products') // The same as fetch
         .then((response) => {
             setProducts(response.data);
         });
 
-        axios.get('http://localhost:3000/api/cart-items')
+        axios.get('/api/cart-items')
         .then ((response) => {
             setCartItems(response.data);
         })
