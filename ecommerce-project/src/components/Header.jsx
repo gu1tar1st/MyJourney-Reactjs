@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export function Header({ cart }) {
     let quantity = 0;
     cart.map((item) => {
-        quantity += 1;
+        quantity += item.quantity;
     })
 
     return (

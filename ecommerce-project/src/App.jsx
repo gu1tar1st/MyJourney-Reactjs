@@ -20,7 +20,7 @@ function App() {
         setProducts(response.data);
       });
 
-    axios.get('/api/cart-items')
+    axios.get('/api/cart-items?expand=product')
       .then((response) => {
         setCartItems(response.data);
       })
