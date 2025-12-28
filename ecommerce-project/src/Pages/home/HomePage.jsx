@@ -32,6 +32,17 @@ export function HomePage({ products, cart }) {
     //         setCartItems(response.data);
     //     })
     // }, []);
+
+    // // Using async await (better than promise fetching)
+    // // Create a new function inside useEffect to not make useEffect callback async
+    // useEffect(async () => {
+    //     const getHomeData = async () => {
+    //         const response = await axios.get('/api/products');
+    //         setProducts(response.data);
+    //     }
+
+    //     getHomeData();
+    // }, []);
     
 
     return (
