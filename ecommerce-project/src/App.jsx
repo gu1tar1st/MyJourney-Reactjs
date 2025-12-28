@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router';
 import { HomePage } from './Pages/home/HomePage'
 import { CheckoutPage } from './Pages/checkout/CheckoutPage'
 import { TrackingPage } from './Pages/TrackingPage'
-import { OrdersPage } from './Pages/OrdersPage'
+import { OrdersPage } from './Pages/orders/OrdersPage'
 import axios from 'axios';
 
 function App() {
