@@ -15,12 +15,18 @@ export function HomePage() {
     //     });
 
     const [products, setProducts] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
     // Run only once
     useEffect(() => {
         axios.get('http://localhost:3000/api/products') // The same as fetch
         .then((response) => {
             setProducts(response.data);
+        });
+
+        axios.get('http://localhost:3000/api/cart-items')
+        .then ((response) => {
+            setCartItems(response.data);
         })
     }, []);
     
@@ -29,7 +35,7 @@ export function HomePage() {
         <>
             <title>Home Page</title>
 
-            <Header />
+            <Header cart={cartItems} />
 
             <div className="home-page">
                 <div className="products-grid">
