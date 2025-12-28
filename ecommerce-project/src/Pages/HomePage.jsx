@@ -1,13 +1,29 @@
 import './HomePage.css';
 import { Header } from '../components/Header';
 import { products } from '../../starting-code/data/products';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export function HomePage() {
     // Requests
-    fetch('http://localhost:3000/api/products') // Return a promise
-        .then((response) => {
+    // fetch('http://localhost:3000/api/products') // Return a promise
+    //     .then((response) => {
+    //         return response.json();
+    //     })
+    //     .then((data) => {
             
+    //     });
+
+    const [products, setProducts] = useState([]);
+
+    // Run only once
+    useEffect(() => {
+        axios.get('http://localhost:3000/api/products') // The same as fetch
+        .then((response) => {
+            setProducts(response.data);
         })
+    }, []);
+    
 
     return (
         <>
