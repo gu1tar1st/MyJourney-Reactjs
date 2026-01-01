@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import { formatMoney } from '../../utils/money';
 import { DeliveryOptions } from './DeliveryOptions';
+import axios from 'axios';
 
-export function OrderSummary({ cart, deliveryOptions }) {
+export function OrderSummary({ cart, deliveryOptions, loadCartItems }) {
     return (
         <>
             <div className="order-summary">
@@ -11,6 +12,11 @@ export function OrderSummary({ cart, deliveryOptions }) {
                         const selectedDeliveryOption = deliveryOptions.find((option) => {
                             return option.id === item.deliveryOptionId;
                         })
+
+                        const deleteCartItem = async () => {
+                            await axios.delete(`/api/cart-items/${item.productId}`);
+                            await loadCartItems();
+                        }
 
                         return (
                             <div key={item.productId} className="cart-item-container">
@@ -36,13 +42,15 @@ export function OrderSummary({ cart, deliveryOptions }) {
                                             <span className="update-quantity-link link-primary">
                                                 Update
                                             </span>
-                                            <span className="delete-quantity-link link-primary">
+                                            <span className="delete-quantity-link link-primary"
+                                                onClick={deleteCartItem}
+                                            >
                                                 Delete
                                             </span>
                                         </div>
                                     </div>
 
-                                    <DeliveryOptions deliveryOptions={deliveryOptions} cartItem={item}/>
+                                    <DeliveryOptions deliveryOptions={deliveryOptions} cartItem={item} loadCartItems={loadCartItems} />
                                 </div>
                             </div>
                         )

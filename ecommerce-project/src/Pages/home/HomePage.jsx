@@ -6,7 +6,7 @@ import { Header } from '../../components/Header';
 // import { formatMoney } from '../../utils/money';
 import { ProductsGrid } from '../home/ProductsGrid';
 
-export function HomePage({ products, cart }) {
+export function HomePage({ products, cart, loadCartItems }) {
     // Requests
     // fetch('http://localhost:3000/api/products') // Return a promise
     //     .then((response) => {
@@ -52,7 +52,7 @@ export function HomePage({ products, cart }) {
             <Header cart={cart} />
 
             <div className="home-page">
-                <ProductsGrid products={products} />
+                <ProductsGrid products={products} loadCartItems={loadCartItems} />
             </div>
         </>
     );

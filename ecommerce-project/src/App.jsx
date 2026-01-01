@@ -12,6 +12,11 @@ function App() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
+  const fetchCartItems = async () => {
+    const response = await axios.get('/api/cart-items?expand=product');
+    setCartItems(response.data);
+  }
+
   // Run only once
   // Config localhost:3000 shortcut in vite config
   useEffect(() => {
@@ -26,17 +31,13 @@ function App() {
     }
 
     getHomeData();
-
-    axios.get('/api/cart-items?expand=product')
-      .then((response) => {
-        setCartItems(response.data);
-      })
+    fetchCartItems();
   }, []);
 
   return (
     <Routes>
-      <Route index element={<HomePage products={products} cart={cartItems} />}></Route> // index = path = ''
-      <Route path='checkout' element={<CheckoutPage cart={cartItems} />} />
+      <Route index element={<HomePage products={products} cart={cartItems} loadCartItems={fetchCartItems} />}></Route> // index = path = ''
+      <Route path='checkout' element={<CheckoutPage cart={cartItems} loadCartItems={fetchCartItems} />} />
       <Route path='tracking' element={<TrackingPage />} />
       <Route path='orders' element={<OrdersPage cart={cartItems} />} />
     </Routes>
