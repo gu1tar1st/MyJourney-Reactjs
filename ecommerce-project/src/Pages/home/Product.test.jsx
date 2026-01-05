@@ -1,6 +1,10 @@
 import { it, expect, describe, vi } from 'vitest';
 import { Product } from './Product';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import axios from 'axios'; // fake version of axios
+
+vi.mock('axios'); // Mock axios to prevent actual API calls
 
 // unit test -> using expect
 // integration test -> using render
@@ -10,9 +14,11 @@ import { render, screen } from '@testing-library/react';
 // "render" to render the component in a virtual DOM for testing
 // "screen" to check what is rendered
 
+// "userEvent" to simulate user interactions
+
 describe('Label: Product Component Integration Tests', () => {
 
-    it('displays the product details correctly', () => {
+    it('displays the product details correctly', async () => {
         const product = {
             id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
             image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -28,6 +34,10 @@ describe('Label: Product Component Integration Tests', () => {
         const loadCart = vi.fn(); // Fake function that does nothing
 
         render(<Product product={product} loadCart={loadCart} />);
+
+        const user = userEvent.setup();
+        const addToCartButton = screen.getByTestId('add-to-cart-button');
+        await user.click(addToCartButton); // takes time, so await
 
         // toBeInTheDocument() is from jest-dom
         expect(
@@ -48,5 +58,16 @@ describe('Label: Product Component Integration Tests', () => {
         expect(
             screen.getByTestId('product-rating-count')
         ).toHaveTextContent("87")
+
+
+        expect(axios.post).toHaveBeenCalledWith(
+            '/api/cart-items',
+            {
+                productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+                quantity: 1
+            }
+        )
+
+        expect(loadCart).toHaveBeenCalled(); // check if loadCart called
     });
 })
