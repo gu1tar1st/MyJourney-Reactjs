@@ -9,7 +9,7 @@ export function ProductsGrid({ products, loadCartItems }) {
             <div className="products-grid">
                 {
                     // For each product in the products array
-                    products.map((product) => {
+                    products?.map((product) => {
                         return (
                             <Product key={product.id} product={product} loadCartItems={loadCartItems} />
                         );

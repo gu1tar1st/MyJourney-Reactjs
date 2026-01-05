@@ -3,9 +3,9 @@ import { Link } from 'react-router';
 
 export function Header({ cart }) {
     let quantity = 0;
-    cart.map((item) => {
+    cart?.map((item) => {
         quantity += item.quantity;
-    })
+    }) // if cart is undefined, skip map
 
     return (
         <div className="header">
