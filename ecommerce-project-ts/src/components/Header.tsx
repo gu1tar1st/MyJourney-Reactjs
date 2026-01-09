@@ -1,7 +1,24 @@
 import './header.css';
 import { Link } from 'react-router';
 
-export function Header({ cart }) {
+// type alias: works like a variable, but for types
+type HeaderProps = {
+    cart: {
+        productId: string,
+        quantity: number,
+        deliveryOptionId: string
+    }[]; // cart is an array of objects
+}
+
+export function Header({ cart }: HeaderProps
+    // : {
+    //     cart: {
+    //         productId: string,
+    //         quantity: number,
+    //         deliveryOptionId: string
+    //     }[]; // cart is an array of objects
+    // }
+) {
     let quantity = 0;
     cart?.map((item) => {
         quantity += item.quantity;
